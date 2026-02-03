@@ -39,3 +39,12 @@ app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log('Lokasi akan disimpan di README.md');
 });
+
+app.get('/readme', (req, res) => {
+    fs.readFile('README.md', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('README.md belum ada');
+        }
+        res.type('text/plain').send(data);
+    });
+});
