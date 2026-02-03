@@ -57,20 +57,25 @@ app.get('/readme', (req, res) => {
     });
 });
 app.post('/clear-locations', (req, res) => {
-    const marker = "## Data Lokasi\n\nData lokasi yang dikumpulkan akan muncul di bawah ini:\n\n"
-
     fs.readFile('README.md', 'utf8', (err, data) => {
         if (err) {
             return res.status(500).json({ success: false, error: 'Gagal baca README' })
         }
 
-        const newContent = data.split(marker)[0] + marker
+        const delimiter = "=================================================\nLOKASI BARU TERDETEKSI"
 
-        fs.writeFile('README.md', newContent, (err) => {
+        if (!data.includes(delimiter)) {
+            return res.json({ success: true, message: 'Tidak ada data lokasi untuk dihapus' })
+        }
+
+        const cleaned = data.split(delimiter)[0]
+
+        fs.writeFile('README.md', cleaned.trim() + "\n\n", (err) => {
             if (err) {
                 return res.status(500).json({ success: false, error: 'Gagal hapus data' })
             }
-            res.json({ success: true, message: 'Semua data lokasi dihapus' })
+
+            res.json({ success: true, message: 'Data lokasi berhasil dihapus' })
         })
     })
 })
