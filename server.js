@@ -5,6 +5,14 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+app.use((req, res, next) => {
+    res.setHeader(
+        "Permissions-Policy",
+        "geolocation=(self)"
+    );
+    next();
+});
+
 app.use(express.json());
 app.use(express.static('public'));
 
