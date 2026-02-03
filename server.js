@@ -48,3 +48,9 @@ app.get('/readme', (req, res) => {
         res.type('text/plain').send(data);
     });
 });
+
+app.post('/clear-locations', (req, res) => {
+    if (req.query.key !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ success: false, message: 'Unauthorized' })
+    }
+})
