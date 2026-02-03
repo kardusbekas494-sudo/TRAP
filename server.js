@@ -56,9 +56,22 @@ app.get('/readme', (req, res) => {
         res.type('text/plain').send(data);
     });
 });
-
 app.post('/clear-locations', (req, res) => {
-    if (req.query.key !== process.env.ADMIN_KEY) {
-        return res.status(403).json({ success: false, message: 'Unauthorized' })
-    }
+    const marker = "## Data Lokasi\n\nData lokasi yang dikumpulkan akan muncul di bawah ini:\n\n"
+
+    fs.readFile('README.md', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: 'Gagal baca README' })
+        }
+
+        const newContent = data.split(marker)[0] + marker
+
+        fs.writeFile('README.md', newContent, (err) => {
+            if (err) {
+                return res.status(500).json({ success: false, error: 'Gagal hapus data' })
+            }
+            res.json({ success: true, message: 'Semua data lokasi dihapus' })
+        })
+    })
 })
+
