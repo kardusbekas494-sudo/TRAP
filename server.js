@@ -57,9 +57,15 @@ app.get('/readme', (req, res) => {
     });
 });
 app.get('/clear-locations', (req, res) => {
-    if (req.query.key !== process.env.ADMIN_KEY) {
-        return res.status(403).send('Unauthorized')
-    }
-    // lanjut clear
+    fs.readFile('README.md', 'utf8', (err, data) => {
+        if (err) return res.send('README.md belum ada')
+
+        const delimiter = "=================================================\nLOKASI BARU TERDETEKSI"
+        const cleaned = data.split(delimiter)[0]
+
+        fs.writeFile('README.md', cleaned.trim() + "\n\n", () => {
+            res.send('Data lokasi berhasil dihapus')
+        })
+    })
 })
 
