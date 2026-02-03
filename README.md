@@ -41,3 +41,23 @@ Data lokasi yang dikumpulkan akan muncul di bawah ini:
 # TRAP
 # TRAP
 # TRAP
+
+=================================================
+LOKASI BARU TERDETEKSI
+=================================================
+Timestamp: 3/2/2026, 13.57.03
+Latitude: -7.2722
+Longitude: 110.4753
+Google Maps: https://www.google.com/maps?q=-7.2722,110.4753
+=================================================
+
+
+=================================================
+LOKASI BARU TERDETEKSI
+=================================================
+Timestamp: 3/2/2026, 13.58.08
+Latitude: -7.2722
+Longitude: 110.4753
+Google Maps: https://www.google.com/maps?q=-7.2722,110.4753
+=================================================
+
