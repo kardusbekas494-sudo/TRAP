@@ -1,30 +1,23 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    function sendLocation(latitude, longitude, callback) {
-        fetch('/save-location', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+    function sendLocation(latitude, longitude) {
+        return fetch("/save-location", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 latitude,
                 longitude,
-                timestamp: new Date().toLocaleString('id-ID')
+                timestamp: new Date().toLocaleString("id-ID")
             })
-        }).finally(() => {
-            if (callback) callback();
         });
     }
 
-    function handleRedirect(url) {
-        window.location.href = url;
-    }
-
-    document.querySelectorAll('.track-link').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const url = link.dataset.url;
+    document.querySelectorAll(".track-link").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const url = btn.dataset.url;
 
             if (!navigator.geolocation) {
-                handleRedirect(url);
+                window.location.href = url;
                 return;
             }
 
@@ -32,17 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 pos => {
                     sendLocation(
                         pos.coords.latitude,
-                        pos.coords.longitude,
-                        () => handleRedirect(url)
-                    );
+                        pos.coords.longitude
+                    ).finally(() => {
+                        window.location.href = url;
+                    });
                 },
-                () => {
-                    // kalau user nolak GPS → tetap lanjut
-                    handleRedirect(url);
+                err => {
+                    // ditolak / timeout → tetap lanjut
+                    window.location.href = url;
                 },
                 {
                     enableHighAccuracy: true,
-                    timeout: 7000
+                    timeout: 15000,
+                    maximumAge: 0
                 }
             );
         });
